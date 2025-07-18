@@ -14,8 +14,6 @@ namespace Source.CodeBase.Infrastructure.Installers
 
     public void InstallBindings(ContainerBuilder containerBuilder)
     {
-      Debug.Log("ProjectInstaller.InstallBindings called!");
-      
       containerBuilder.AddSingleton<IAssetService>(_ => new AddressableAssetService());
 
       containerBuilder.AddSingleton<IPrefabLoaderService>(container => new PrefabLoaderService(container.Resolve<IAssetService>()));
@@ -26,8 +24,6 @@ namespace Source.CodeBase.Infrastructure.Installers
         _rewardObjectPrefabKey,
         _rouletteViewPrefabKey,
         _loadingWindowPrefabKey));
-      
-      Debug.Log("ProjectInstaller.InstallBindings completed!");
     }
   }
 }
