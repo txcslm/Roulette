@@ -57,7 +57,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22a0d37bef4b7421ba120968291c9ae5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _slotPrefabKey: Prefabs/SlotPrefab.prefab
-  _rewardObjectPrefabKey: Prefabs/RewardObjectPrefab.prefab
-  _rouletteViewPrefabKey: Prefabs/RouletteView.prefab
-  _loadingWindowPrefabKey: Prefabs/LoadingWindow.prefab
+  _assetKeysConfig: {fileID: 11400000, guid: a318d0e0b51c9425c90f5fb7a2b0e1a7, type: 2}

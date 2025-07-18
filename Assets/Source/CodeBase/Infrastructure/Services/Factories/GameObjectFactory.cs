@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Source.CodeBase.Infrastructure.Configs.Interfaces;
 using Source.CodeBase.Infrastructure.Services.Interfaces;
 using Source.CodeBase.Views;
 using UnityEngine;
@@ -17,13 +18,13 @@ namespace Source.CodeBase.Infrastructure.Services
     private RouletteView _rouletteViewPrefab;
     private LoadingWindow _loadingWindowPrefab;
 
-    public GameObjectFactory(IPrefabLoaderService prefabLoader, string slotPrefabKey, string rewardObjectPrefabKey, string rouletteViewPrefabKey, string loadingWindowPrefabKey)    
+    public GameObjectFactory(IPrefabLoaderService prefabLoader, IAssetKeysConfigProvider configProvider)    
     {
       _prefabLoader = prefabLoader;
-      _slotPrefabKey = slotPrefabKey;
-      _rewardObjectPrefabKey = rewardObjectPrefabKey;
-      _rouletteViewPrefabKey = rouletteViewPrefabKey;
-      _loadingWindowPrefabKey = loadingWindowPrefabKey;
+      _slotPrefabKey = configProvider.Config.SlotPrefabKey;
+      _rewardObjectPrefabKey = configProvider.Config.RewardObjectPrefabKey;
+      _rouletteViewPrefabKey = configProvider.Config.RouletteViewPrefabKey;
+      _loadingWindowPrefabKey = configProvider.Config.LoadingWindowPrefabKey;
     }
 
     public async UniTask InitializeAsync()

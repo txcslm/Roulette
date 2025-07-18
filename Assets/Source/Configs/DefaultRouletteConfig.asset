@@ -25,8 +25,8 @@ MonoBehaviour:
   _rewardObjectMoveToCenterDuration: 0.5
   _rewardObjectMinDelay: 1
   _rewardObjectMaxDelay: 2.5
-  _spawnRadiusMin: 50
-  _spawnRadiusMax: 150
+  _spawnRadiusMin: 30
+  _spawnRadiusMax: 60
   _slotPoolMaxSize: 12
   _rewardObjectPoolMaxSize: 20
   _rewardObjectSize: {x: 100, y: 100}

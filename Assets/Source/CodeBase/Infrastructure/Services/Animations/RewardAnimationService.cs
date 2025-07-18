@@ -99,8 +99,17 @@ namespace Source.CodeBase.Infrastructure.Services
       return result;
     }
 
-    private Vector3 GetSlotWorldPosition(int slotIndex) =>
-      new Vector3(0, _configProvider.Config.SlotRadius, 0);
+    private Vector3 GetSlotWorldPosition(int slotIndex)
+    {
+      float slotAngle = slotIndex * _configProvider.Config.SlotAngle * Mathf.Deg2Rad;
+      float radius = _configProvider.Config.SlotRadius;
+      
+      return new Vector3(
+        Mathf.Cos(slotAngle) * radius,
+        Mathf.Sin(slotAngle) * radius,
+        0
+      );
+    }
 
     private async UniTask SpawnRewardObjectAsync(Transform container, RouletteSlot winningSlot, int objectValue, TextMeshProUGUI counterText, Vector3 slotPosition)
     {
