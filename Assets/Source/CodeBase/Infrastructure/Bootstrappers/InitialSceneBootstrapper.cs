@@ -23,13 +23,6 @@ namespace Source.CodeBase.Infrastructure.Bootstrappers
 
     private async UniTask StartInitialization()
     {
-      
-      if (_sceneService == null || _gameObjectFactory == null)
-      {
-        Debug.LogError("Dependencies not injected properly. Make sure ProjectScope and SceneScope are set up correctly.");
-        return;
-      }
-
       await InitializeAsync();
     }
 
@@ -54,12 +47,6 @@ namespace Source.CodeBase.Infrastructure.Bootstrappers
 
       try
       {
-        if (_sceneService == null || _gameObjectFactory == null)
-        {
-          Debug.LogError("Dependencies not injected properly. Make sure ProjectScope and SceneScope are set up correctly.");
-          return;
-        }
-
         await InitializeAddressables();
         await LoadRequiredAssets();
         await TransitionToMainScene();
