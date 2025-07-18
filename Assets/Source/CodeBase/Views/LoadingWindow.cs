@@ -8,6 +8,7 @@ namespace Source.CodeBase.Views
   public class LoadingWindow : BaseWindow
   {
     private const float SpinSpeed = GameConstants.LoadingSpinnerSpeed;
+    
     [SerializeField] private TextMeshProUGUI _loadingText;
     [SerializeField] private Image _loadingBar;
     [SerializeField] private Image _loadingSpinner;

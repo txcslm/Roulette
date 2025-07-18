@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Reflex.Core;
 using Source.CodeBase.Infrastructure.Services;
 using Source.CodeBase.Infrastructure.Services.Interfaces;
@@ -8,12 +7,15 @@ namespace Source.CodeBase.Infrastructure.Installers
 {
   public class ProjectInstaller : MonoBehaviour, IInstaller
   {
-    [SerializeField] private string _slotPrefabKey = "SlotPrefab";
-    [SerializeField] private string _rewardObjectPrefabKey = "RewardObjectPrefab";
-    [SerializeField] private string _rouletteViewPrefabKey = "RouletteViewPrefab";
+    [SerializeField] private string _slotPrefabKey = "Prefabs/SlotPrefab.prefab";
+    [SerializeField] private string _rewardObjectPrefabKey = "Prefabs/RewardObjectPrefab.prefab";
+    [SerializeField] private string _rouletteViewPrefabKey = "Prefabs/RouletteView.prefab";
+    [SerializeField] private string _loadingWindowPrefabKey = "Prefabs/LoadingWindow.prefab";
 
     public void InstallBindings(ContainerBuilder containerBuilder)
     {
+      Debug.Log("ProjectInstaller.InstallBindings called!");
+      
       containerBuilder.AddSingleton<IAssetService>(_ => new AddressableAssetService());
 
       containerBuilder.AddSingleton<IPrefabLoaderService>(container => new PrefabLoaderService(container.Resolve<IAssetService>()));
@@ -22,7 +24,10 @@ namespace Source.CodeBase.Infrastructure.Installers
       containerBuilder.AddSingleton<IGameObjectFactory>(container => new GameObjectFactory(container.Resolve<IPrefabLoaderService>(),
         _slotPrefabKey,
         _rewardObjectPrefabKey,
-        _rouletteViewPrefabKey));
+        _rouletteViewPrefabKey,
+        _loadingWindowPrefabKey));
+      
+      Debug.Log("ProjectInstaller.InstallBindings completed!");
     }
   }
 }

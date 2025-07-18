@@ -12,5 +12,7 @@ namespace Source.CodeBase.Infrastructure.Services.Interfaces
     RewardObjectView CreateRewardObject();
     
     RouletteView CreateRouletteView();
+    
+    UniTask<LoadingWindow> CreateLoadingWindowAsync();
   }
 }

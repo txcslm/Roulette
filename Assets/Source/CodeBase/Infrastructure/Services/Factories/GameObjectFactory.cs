@@ -11,16 +11,19 @@ namespace Source.CodeBase.Infrastructure.Services
     private readonly string _rewardObjectPrefabKey;
     private readonly string _slotPrefabKey;
     private readonly string _rouletteViewPrefabKey;
+    private readonly string _loadingWindowPrefabKey;
     private RewardObjectView _rewardObjectPrefab;
     private SlotView _slotPrefab;
     private RouletteView _rouletteViewPrefab;
+    private LoadingWindow _loadingWindowPrefab;
 
-    public GameObjectFactory(IPrefabLoaderService prefabLoader, string slotPrefabKey, string rewardObjectPrefabKey, string rouletteViewPrefabKey)
+    public GameObjectFactory(IPrefabLoaderService prefabLoader, string slotPrefabKey, string rewardObjectPrefabKey, string rouletteViewPrefabKey, string loadingWindowPrefabKey)    
     {
       _prefabLoader = prefabLoader;
       _slotPrefabKey = slotPrefabKey;
       _rewardObjectPrefabKey = rewardObjectPrefabKey;
       _rouletteViewPrefabKey = rouletteViewPrefabKey;
+      _loadingWindowPrefabKey = loadingWindowPrefabKey;
     }
 
     public async UniTask InitializeAsync()
@@ -38,5 +41,14 @@ namespace Source.CodeBase.Infrastructure.Services
 
     public RouletteView CreateRouletteView() =>
       Object.Instantiate(_rouletteViewPrefab);
+
+    public async UniTask<LoadingWindow> CreateLoadingWindowAsync()
+    {
+      if (_loadingWindowPrefab == null)
+      {
+        _loadingWindowPrefab = await _prefabLoader.LoadPrefabAsync<LoadingWindow>(_loadingWindowPrefabKey);
+      }
+      return Object.Instantiate(_loadingWindowPrefab);
+    }
   }
 }

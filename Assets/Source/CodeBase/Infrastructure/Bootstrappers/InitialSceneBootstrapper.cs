@@ -10,13 +10,26 @@ namespace Source.CodeBase.Infrastructure.Bootstrappers
 {
   public class InitialSceneBootstrapper : MonoBehaviour
   {
-    [SerializeField] private LoadingWindow _loadingWindow;
+    [SerializeField] private RectTransform _container;
+    private LoadingWindow _loadingWindow;
     private IGameObjectFactory _gameObjectFactory;
 
     private ISceneService _sceneService;
 
-    private async void Start()
+    private void Awake()
     {
+      StartInitialization().Forget();
+    }
+
+    private async UniTask StartInitialization()
+    {
+      
+      if (_sceneService == null || _gameObjectFactory == null)
+      {
+        Debug.LogError("Dependencies not injected properly. Make sure ProjectScope and SceneScope are set up correctly.");
+        return;
+      }
+
       await InitializeAsync();
     }
 
@@ -27,10 +40,10 @@ namespace Source.CodeBase.Infrastructure.Bootstrappers
       _gameObjectFactory = gameObjectFactory;
     }
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
     private async UniTask InitializeAsync()
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     {
+     _loadingWindow =  await _gameObjectFactory.CreateLoadingWindowAsync();
+      _loadingWindow.transform.SetParent(_container, false);
       _loadingWindow.Show();
       _loadingWindow.EndShow += OnLoadingWindowShown;
     }
@@ -41,6 +54,12 @@ namespace Source.CodeBase.Infrastructure.Bootstrappers
 
       try
       {
+        if (_sceneService == null || _gameObjectFactory == null)
+        {
+          Debug.LogError("Dependencies not injected properly. Make sure ProjectScope and SceneScope are set up correctly.");
+          return;
+        }
+
         await InitializeAddressables();
         await LoadRequiredAssets();
         await TransitionToMainScene();
