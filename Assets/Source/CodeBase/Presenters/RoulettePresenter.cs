@@ -181,7 +181,7 @@ namespace Source.CodeBase.Presenters
 
         await View.PlaySpinAnimationAsync(finalRotationZ, _configProvider.Config.SpinAnimationDuration);
 
-        await _rewardAnimationService.PlayRewardAnimationAsync(winningSlot, View.RewardAnimationContainer, View.RewardCounterText);
+        await _rewardAnimationService.PlayRewardAnimationAsync(winningSlot, View.RewardAnimationContainer, View.RewardCounterText, finalRotationZ);
 
         _model.AddRewardCount(winningSlot.RewardType, winningSlot.Value);
 

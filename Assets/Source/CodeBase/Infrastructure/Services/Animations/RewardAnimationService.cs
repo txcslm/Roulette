@@ -22,16 +22,19 @@ namespace Source.CodeBase.Infrastructure.Services
       _configProvider = configProvider;
     }
 
-    public async UniTask PlayRewardAnimationAsync(RouletteSlot winningSlot, Transform container, TextMeshProUGUI counterText)
+    public async UniTask PlayRewardAnimationAsync(RouletteSlot winningSlot, Transform container, TextMeshProUGUI counterText, float rouletteRotationZ)
     {
-      if (counterText == null || container == null) return;
+      if (counterText == null || container == null)
+        return;
 
       counterText.gameObject.SetActive(true);
       counterText.text = "0";
 
       var rewardObjects = CalculateRewardObjects(winningSlot.Value);
 
-      var slotWorldPosition = GetSlotWorldPosition(winningSlot.SlotIndex);
+      var slotWorldPosition = GetSlotWorldPositionAfterRotation(winningSlot.SlotIndex, rouletteRotationZ);
+      
+      Debug.Log($"Spawning rewards for slot {winningSlot.SlotIndex} at position {slotWorldPosition}, rotation was {rouletteRotationZ}°");
 
       var spawnTasks = new List<UniTask>();
 
@@ -99,16 +102,24 @@ namespace Source.CodeBase.Infrastructure.Services
       return result;
     }
 
-    private Vector3 GetSlotWorldPosition(int slotIndex)
+    private Vector3 GetSlotWorldPositionAfterRotation(int slotIndex, float rouletteRotationZ)
     {
       float slotAngle = slotIndex * _configProvider.Config.SlotAngle * Mathf.Deg2Rad;
+      
+      float rotationRad = rouletteRotationZ * Mathf.Deg2Rad;
+      
+      // Слоты поворачиваются в противоположную сторону от рулетки
+      float finalAngle = slotAngle - rotationRad;
+      
       float radius = _configProvider.Config.SlotRadius;
       
-      return new Vector3(
-        Mathf.Cos(slotAngle) * radius,
-        Mathf.Sin(slotAngle) * radius,
+      var position = new Vector3(
+        Mathf.Sin(finalAngle) * radius,
+        Mathf.Cos(finalAngle) * radius,
         0
       );
+      
+      return position;
     }
 
     private async UniTask SpawnRewardObjectAsync(Transform container, RouletteSlot winningSlot, int objectValue, TextMeshProUGUI counterText, Vector3 slotPosition)
@@ -118,12 +129,13 @@ namespace Source.CodeBase.Infrastructure.Services
       float randomRadius = Random.Range(_configProvider.Config.SpawnRadiusMin, _configProvider.Config.SpawnRadiusMax);
       float randomAngle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
 
-      var offsetFromSlot = new Vector3(Mathf.Cos(randomAngle) * randomRadius,
+      var offsetFromSlot = new Vector3(
+        Mathf.Cos(randomAngle) * randomRadius,
         Mathf.Sin(randomAngle) * randomRadius,
         0);
 
       var spawnPosition = slotPosition + offsetFromSlot;
-
+      
       var rewardObjectData = new RewardObjectData
       {
         StartPosition = spawnPosition,
